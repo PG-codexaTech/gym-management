@@ -1,0 +1,16 @@
+.alert {
+  color: #fff;
+  background-color: bisque;
+  padding: 10px;
+}
+.success {
+  background-color: #47d527;
+}
+
+.error {
+  background-color: #d52d27;
+}
+
+.failed {
+  background-color: rgb(255, 221, 0);
+}
