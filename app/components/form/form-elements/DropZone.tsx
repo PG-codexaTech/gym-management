@@ -55,12 +55,12 @@ export const DropzoneComponent = <TFieldValues extends FieldValues>({
           const file = acceptedFiles[0];
           onChange(file);
           setPreviewUrls(
-            file.type.startsWith("image/") ? [URL.createObjectURL(file)] : []
+            file.type.startsWith("image/") ? [URL.createObjectURL(file)] : [],
           );
         }
       }
     },
-    [onChange, maxSizeMB, setImageError, name, allowMutliple]
+    [onChange, maxSizeMB, setImageError, name, allowMutliple],
   );
 
   const removeFile = (index?: number) => {

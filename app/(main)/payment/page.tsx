@@ -93,8 +93,8 @@ export default function PaymentRequestsClient() {
       row.paymentMethod.toLowerCase().includes(searchTerm.toLowerCase()) ||
       row.reviewedBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
       format(new Date(row.createdAt), "yyyy-MM-dd HH:mm:ss").includes(
-        searchTerm
-      )
+        searchTerm,
+      ),
   );
 
   return (
@@ -103,7 +103,7 @@ export default function PaymentRequestsClient() {
       <div className="flex items-center justify-between mb-5">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
           paymentRequestList
-        </h3>       
+        </h3>
       </div>
       <div className="space-y-6">
         <Table
@@ -115,4 +115,4 @@ export default function PaymentRequestsClient() {
       </div>
     </>
   );
-} 
+}

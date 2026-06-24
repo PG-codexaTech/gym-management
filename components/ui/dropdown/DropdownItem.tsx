@@ -30,7 +30,6 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
     if (onItemClick) onItemClick();
   };
 
-
   if (tag === "a" && to) {
     return (
       <Link href={to} className={combinedClasses} onClick={onItemClick}>

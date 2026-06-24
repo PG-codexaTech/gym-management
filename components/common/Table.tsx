@@ -246,7 +246,7 @@ function Table<T>({
                 >
                   {page}
                 </span>
-              )
+              ),
             )}
 
             <button

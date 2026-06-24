@@ -6,17 +6,13 @@ interface Props {
   children: ReactNode;
 }
 
-const ThemeProvider: React.FC<Props> = ({ children }) => {
-  // Start with a default value (safe on server)
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+const getInitialTheme = (): "light" | "dark" => {
+  if (typeof window === "undefined") return "light";
+  return (localStorage.getItem("theme") as "light" | "dark" | null) ?? "light";
+};
 
-  // Load theme from localStorage on client
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
-  }, []);
+const ThemeProvider: React.FC<Props> = ({ children }) => {
+  const [theme, setTheme] = useState<"light" | "dark">(getInitialTheme);
 
   // Persist theme & update document class when it changes
   useEffect(() => {

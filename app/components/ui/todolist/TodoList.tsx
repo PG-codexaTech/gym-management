@@ -30,7 +30,7 @@ const TodoList = () => {
           return { ...item, done: !item.done };
         }
         return item;
-      })
+      }),
     );
   };
 
