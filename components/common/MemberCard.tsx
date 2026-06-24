@@ -1,6 +1,6 @@
-import React from 'react';
-import Image from 'next/image';
-import Button from '../ui/button/Button';
+import React from "react";
+import Image from "next/image";
+import Button from "../ui/button/Button";
 
 interface MemberCardProps {
   name: string;
@@ -9,7 +9,7 @@ interface MemberCardProps {
   lastCheckIn: string;
   avatarUrl: string;
   coverImageUrl: string;
-  status: 'ACTIVE' | 'EXPIRED' | 'TRIAL';
+  status: "ACTIVE" | "EXPIRED" | "TRIAL";
 }
 
 const MemberCard: React.FC<MemberCardProps> = ({
@@ -21,16 +21,14 @@ const MemberCard: React.FC<MemberCardProps> = ({
   coverImageUrl,
   status,
 }) => {
-
   const statusColors = {
-    ACTIVE: 'bg-green-500',
-    EXPIRED: 'bg-red-500',
-    TRIAL: 'bg-blue-500',
-  }
+    ACTIVE: "bg-green-500",
+    EXPIRED: "bg-red-500",
+    TRIAL: "bg-blue-500",
+  };
 
   return (
     <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-      
       {/* Cover */}
       <div className="relative h-32 w-full bg-gray-200">
         <Image
@@ -38,11 +36,11 @@ const MemberCard: React.FC<MemberCardProps> = ({
           alt="Cover"
           fill
           className="object-cover"
-          unoptimized  
+          unoptimized
         />
 
         <span
-          className={`absolute right-3 top-3 rounded px-2 py-1 text-xs text-white ${ statusColors[status] }`}
+          className={`absolute right-3 top-3 rounded px-2 py-1 text-xs text-white ${statusColors[status]}`}
         >
           {status}
         </span>
@@ -64,8 +62,12 @@ const MemberCard: React.FC<MemberCardProps> = ({
 
       {/* Content */}
       <div className="p-4">
-        <h3 className="text-base font-medium text-gray-800 dark:text-white/90">{name}</h3>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{memberId}</p>
+        <h3 className="text-base font-medium text-gray-800 dark:text-white/90">
+          {name}
+        </h3>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          {memberId}
+        </p>
 
         <div className="mt-4 space-y-2 text-sm text-gray-500 dark:text-gray-400">
           <div className="flex justify-between">
@@ -79,8 +81,12 @@ const MemberCard: React.FC<MemberCardProps> = ({
         </div>
 
         <div className="mt-4 flex gap-2">
-          <Button variant='outline' size='sm'>Edit</Button>
-          <Button variant='outline' size='sm'>Delete</Button>
+          <Button variant="outline" size="sm">
+            Edit
+          </Button>
+          <Button variant="outline" size="sm">
+            Delete
+          </Button>
         </div>
       </div>
     </div>

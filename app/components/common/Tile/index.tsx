@@ -29,8 +29,9 @@ const Tile: React.FC<TileProps> = ({
 
   return (
     <div
-      className={`flex justify-between rounded-2xl border ${borderColor} ${borderLeftColor ? `border-l-4 border-l-${borderLeftColor}` : ""
-        } bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6`}
+      className={`flex justify-between rounded-2xl border ${borderColor} ${
+        borderLeftColor ? `border-l-4 border-l-${borderLeftColor}` : ""
+      } bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6`}
     >
       <div className="flex items-start justify-between ">
         <div>
@@ -40,12 +41,8 @@ const Tile: React.FC<TileProps> = ({
           <h4 className="mt-2 font-semibold text-gray-800 text-xl dark:text-white/90">
             {available && limit ? (
               <>
-                <span className="block text-sm">
-                  {available}
-                </span>
-                <span className="block text-sm">
-                  {limit}
-                </span>
+                <span className="block text-sm">{available}</span>
+                <span className="block text-sm">{limit}</span>
               </>
             ) : link ? (
               <span className="text-lg font-normal flex items-center gap-1">

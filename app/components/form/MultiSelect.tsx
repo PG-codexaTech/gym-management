@@ -67,7 +67,7 @@ const MultiSelect = ({
   };
 
   const selectedLabels = value?.map(
-    (val) => options.find((opt) => opt.value === val)?.label || ""
+    (val) => options.find((opt) => opt.value === val)?.label || "",
   );
 
   useEffect(() => {

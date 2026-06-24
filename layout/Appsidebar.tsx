@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { MdCurrencyRupee, MdVerifiedUser } from "react-icons/md";
 import { usePathname } from "next/navigation";
@@ -14,83 +14,64 @@ type NavItem = {
   subItems?: { name: string; path: string; new?: boolean }[];
 };
 
+const navItems: NavItem[] = [
+  {
+    icon: <CiGrid41 />,
+    name: "dashboard",
+    path: "/",
+  },
+  {
+    icon: <MdCurrencyRupee />,
+    name: "profile",
+    path: "/profile",
+  },
+  {
+    icon: <MdVerifiedUser />,
+    name: "member",
+    path: "/member-management",
+  },
+  {
+    icon: <MdCurrencyRupee />,
+    name: "locations",
+    subItems: [
+      { name: "approved", path: "/locations/approved" },
+      { name: "requests", path: "/locations/requests" },
+    ],
+  },
+];
+
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } =
     useSidebar() ?? {};
   const pathname = usePathname();
 
-  const navItems: NavItem[] = [
-    {
-      icon: <CiGrid41 />,
-      name: "dashboard",
-      path: "/",
-    },
+  const routeSubmenuIndex = useMemo(() => {
+    const index = navItems.findIndex((nav) =>
+      nav.subItems?.some((subItem) => pathname === subItem.path),
+    );
+    return index >= 0 ? index : null;
+  }, [pathname]);
 
-    {
-      icon: <MdCurrencyRupee />,
-      name: "profile",
-      path: "/profile",
-    },
-    {
-      icon: <MdVerifiedUser />,
-      name: "member",
-      path: "/member-management",
-    },
-    {
-      icon: <MdCurrencyRupee />,
-      name: "locations",
-      subItems: [
-        { name: "approved", path: "/locations/approved" },
-        { name: "requests", path: "/locations/requests" },
-      ],
-    },
-  ];
+  const [submenuOverride, setSubmenuOverride] = useState<{
+    pathname: string;
+    index: number | null;
+  } | null>(null);
 
-  const [openSubmenu, setOpenSubmenu] = useState<number | null>(null);
-  const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>(
-    {}
-  );
-  const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const openSubmenu =
+    submenuOverride?.pathname === pathname
+      ? submenuOverride.index
+      : routeSubmenuIndex;
 
-  // const isActive = (path: string) => location.pathname === path;
   const isActive = useCallback((path: string) => pathname === path, [pathname]);
 
-  useEffect(() => {
-    let submenuMatched = false;
-    navItems.forEach((nav, index) => {
-      if (nav.subItems) {
-        nav.subItems.forEach((subItem) => {
-          if (isActive(subItem.path)) {
-            setOpenSubmenu(index);
-            submenuMatched = true;
-          }
-        });
-      }
-    });
-
-    if (!submenuMatched) {
-      setOpenSubmenu(null);
-    }
-  }, [pathname, isActive]);
-
-  useEffect(() => {
-    if (openSubmenu !== null) {
-      const key = openSubmenu;
-      if (subMenuRefs.current[key]) {
-        setSubMenuHeight((prevHeights) => ({
-          ...prevHeights,
-          [key]: subMenuRefs.current[key]?.scrollHeight || 0,
-        }));
-      }
-    }
-  }, [openSubmenu]);
-
   const handleSubmenuToggle = (index: number) => {
-    setOpenSubmenu((prevOpenSubmenu) => {
-      if (prevOpenSubmenu !== null && prevOpenSubmenu === index) {
-        return null;
-      }
-      return index;
+    setSubmenuOverride((prev) => {
+      const current =
+        prev?.pathname === pathname ? prev.index : routeSubmenuIndex;
+      return {
+        pathname,
+        index: current === index ? null : index,
+      };
     });
   };
 
@@ -156,16 +137,11 @@ const AppSidebar: React.FC = () => {
           )}
           {nav.subItems && (isExpanded || isHovered || isMobileOpen) && (
             <div
-              ref={(el) => {
-                subMenuRefs.current[index] = el;
-              }}
-              className="overflow-hidden transition-all duration-300"
-              style={{
-                height:
-                  openSubmenu === index ? `${subMenuHeight[index]}px` : "0px",
-              }}
+              className={`grid transition-[grid-template-rows] duration-300 ${
+                openSubmenu === index ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+              }`}
             >
-              <ul className="mt-2 space-y-1 ml-9">
+              <ul className="mt-2 space-y-1 ml-9 overflow-hidden">
                 {nav.subItems.map((subItem) => (
                   <li key={subItem.name}>
                     <Link
@@ -208,8 +184,8 @@ const AppSidebar: React.FC = () => {
           isExpanded || isMobileOpen
             ? "w-[290px]"
             : isHovered
-            ? "w-[290px]"
-            : "w-[90px]"
+              ? "w-[290px]"
+              : "w-[90px]"
         }
         ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
         lg:translate-x-0`}
